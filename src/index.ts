@@ -14,10 +14,10 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 export const io = new Server(server, {
-    cors: {
-        origin: process.env.CLIENT_URL || 'http://localhost:3000',
-        methods: ['GET', 'POST']
-    }
+  cors: {
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    methods: ['GET', 'POST']
+  }
 });
 
 app.use(cors());
@@ -31,39 +31,39 @@ const URI = process.env.ATLAS_URI as string;
 const PORT = process.env.PORT || 5000;
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.DEFAULT_EMAIL,
-        pass: process.env.DEFAULT_PASSWORD
-    }
+  service: 'gmail',
+  auth: {
+    user: process.env.DEFAULT_EMAIL,
+    pass: process.env.DEFAULT_PASSWORD
+  }
 });
 
 const connectToDB = async () => {
-    try {
-        await mongoose.connect(URI);
-        console.log('\x1b[36m', '-- Connected to MongoDB');
-        server.listen(PORT, () => console.log('\x1b[36m', `-- Server is running on port: ${PORT}`));
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    await mongoose.connect(URI);
+    console.log('\x1b[36m', '-- Connected to MongoDB');
+    server.listen(PORT, () => console.log('\x1b[36m', `-- Server is running on port: ${PORT}`));
+  } catch (err) {
+    console.log(err);
+  }
 };
 connectToDB();
 
 export const sendEmail = async (to: string, subject: string, text: string) => {
-    const mailOptions = {
-        from: process.env.DEFAULT_EMAIL,
-        to: to,
-        subject: subject,
-        text: text
-    };
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent ' + info.response);
-    } catch (err) {
-        console.log(err);
-    }
+  const mailOptions = {
+    from: process.env.DEFAULT_EMAIL,
+    to: to,
+    subject: subject,
+    text: text
+  };
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent ' + info.response);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 app.all('*', (req: Request, res: Response) => {
-    res.sendStatus(404);
+  res.sendStatus(404);
 });
