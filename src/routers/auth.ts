@@ -1,7 +1,7 @@
 import Router, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { v4 as uuidv4 } from 'uuid';
+import { uuid as uuidV4 } from 'uuidv4';
 import User from '../models/users.js';
 import { sendEmail } from '../index.js';
 
@@ -11,7 +11,7 @@ const SALT_ROUNDS = 10;
 
 router.post('/sendVerificationEmail', async (req: Request, res: Response) => {
   const { email, password }: { email: string; password: string } = req.body;
-  const verificationToken = uuidv4();
+  const verificationToken = uuidV4();
 
   try {
     const emailAlreadyRegistered = await User.findOne({ email });
